@@ -15,7 +15,7 @@ __email__ = "adrien.guille@univ-lyon2.fr"
 class Corpus:
 
     def __init__(self,
-                 source_file_path,
+                 text,
                  language=None,
                  n_gram=1,
                  vectorization='tfidf',
@@ -24,7 +24,7 @@ class Corpus:
                  max_features=2000,
                  sample=None):
 
-        self._source_file_path = source_file_path
+        self.text = text
         self._language = language
         self._n_gram = n_gram
         self._vectorization = vectorization
@@ -32,12 +32,12 @@ class Corpus:
         self._min_absolute_frequency = min_absolute_frequency
 
         self.max_features = max_features
-        self.data_frame = pandas.read_csv(source_file_path, sep='\t', encoding='utf-8')
+        '''self.data_frame = pandas.read_csv(source_file_path, sep='\t', encoding='utf-8')
         if sample:
             self.data_frame = self.data_frame.sample(frac=0.8)
         self.data_frame.fillna(' ')
         self.size = self.data_frame.count(0)[0]
-
+		''''
         stop_words = []
         if language is not None:
             stop_words = stopwords.words(language)
@@ -55,20 +55,20 @@ class Corpus:
                                          stop_words=stop_words)
         else:
             raise ValueError('Unknown vectorization type: %s' % vectorization)
-        self.sklearn_vector_space = vectorizer.fit_transform(self.data_frame['text'].tolist())
+        self.sklearn_vector_space = vectorizer.fit_transform(self.text)
         self.gensim_vector_space = None
         vocab = vectorizer.get_feature_names()
         self.vocabulary = dict([(i, s) for i, s in enumerate(vocab)])
-
+'''
     def export(self, file_path):
         self.data_frame.to_csv(path_or_buf=file_path, sep='\t', encoding='utf-8')
-
-    def full_text(self, doc_id):
-        return self.data_frame.iloc[doc_id]['text']
 
     def title(self, doc_id):
         return self.data_frame.iloc[doc_id]['title']
 
+    def full_text(self, doc_id):
+        return self.data_frame.iloc[doc_id]['review']
+		
     def date(self, doc_id):
         return self.data_frame.iloc[doc_id]['date']
 
@@ -80,6 +80,7 @@ class Corpus:
         aff_str = str(self.data_frame.iloc[doc_id]['affiliation'])
         return aff_str.split(', ')
 
+	
     def documents_by_author(self, author, date=None):
         ids = []
         potential_ids = range(self.size)
@@ -109,7 +110,7 @@ class Corpus:
 
     def doc_ids(self, date):
         return self.data_frame[self.data_frame['date'] == date].index.tolist()
-
+'''
     def vector_for_document(self, doc_id):
         vector = self.sklearn_vector_space[doc_id]
         cx = vector.tocoo()
