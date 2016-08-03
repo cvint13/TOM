@@ -20,7 +20,7 @@ cur = conn.cursor()
 #get reason for recall from db
 cur.execute('SELECT REASON, EVENT_ID FROM EVENT;')
 event_data = pd.DataFrame(cur.fetchall())
-reason_text = event_data[0]
+reason_text = list(event_data.iloc[:,0])
 
 #create corpus from reason for recall text
 corpus = Corpus(text = reason_text,
