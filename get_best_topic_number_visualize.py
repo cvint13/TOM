@@ -23,7 +23,7 @@ reason_text = event_data[0]
 
 #create corpus from reason for recall text
 corpus = Corpus(text = reason_text,
-                language='french', 
+                language='english', 
                 vectorization='tfidf', 
                 n_gram=1,
                 max_relative_frequency=0.8, 
