@@ -8,6 +8,7 @@ from tom_lib.structure import corpus
 from tom_lib.nlp import topic_model
 from tom_lib.visualization import visualization
 import psycopg2
+import pandas as pd
 
 #Connect to database
 conn = psycopg2.connect(database="RecallsReviews2", user="unsafefoods2", password="Password1", host="unsafefoods2.csya4zsfb6y4.us-east-1.rds.amazonaws.com", port="5432")
